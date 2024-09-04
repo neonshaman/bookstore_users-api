@@ -1,4 +1,4 @@
-package bookstore_users_api
+package main
 
 import (
 	"github.com/neonshaman/bookstore_users-api/app"
