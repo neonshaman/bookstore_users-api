@@ -5,12 +5,25 @@ import (
 	"github.com/neonshaman/bookstore_users-api/utils/errors"
 )
 
-func GetUser() {
-
+// GetUser attempts to get user through DAO, then return
+func GetUser(userId int64) (*users.User, *errors.RestErr) {
+	result := &users.User{Id: userId}
+	if err := result.Get(); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
+// CreateUser attempts to validate user struct through DTO, save to persistence later through DAO, then return
 func CreateUser(user users.User) (*users.User, *errors.RestErr) {
-	// TODO: Implement me!
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+
+	if err := user.Save(); err != nil {
+		return nil, err
+	}
+
 	return &user, nil
 }
 
