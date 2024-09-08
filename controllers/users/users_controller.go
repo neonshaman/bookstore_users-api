@@ -6,8 +6,10 @@ import (
 	"github.com/neonshaman/bookstore_users-api/services"
 	"github.com/neonshaman/bookstore_users-api/utils/errors"
 	"net/http"
+	"strconv"
 )
 
+// CreateUser attempts to write a user to the persistence layer, encoding proper JSON response to context
 func CreateUser(c *gin.Context) {
 	var user users.User
 
@@ -25,8 +27,21 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
+// GetUser attempts to read user by user_id, encoding proper JSON response to context
 func GetUser(c *gin.Context) {
-	c.String(http.StatusNotImplemented, "Implement GetUser!")
+	userId, userErr := strconv.ParseInt(c.Param("user_id"), 10, 64)
+	if userErr != nil {
+		err := errors.NewBadRequestError("invalid user id")
+		c.JSON(err.Status, err)
+		return
+	}
+	user, getErr := services.GetUser(userId)
+	if getErr != nil {
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+	c.JSON(http.StatusOK, user)
+	return
 }
 
 func FindUser(c *gin.Context) {
