@@ -13,7 +13,7 @@ type User struct {
 	DateCreated string `json:"date_created"`
 }
 
-// Validate confirms email address is not nil string. Will expand with email regex later.
+// Validate confirms email address is not nil string. Will expand with mail.ParseAddress() later.
 func (user *User) Validate() *errors.RestErr {
 	user.Email = strings.TrimSpace(strings.ToLower(user.Email))
 	if user.Email == "" {
