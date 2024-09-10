@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"github.com/neonshaman/bookstore_users-api/datasources/mysql/bookstore_users_db"
 	"github.com/neonshaman/bookstore_users-api/utils/date_utils"
 	"github.com/neonshaman/bookstore_users-api/utils/errors"
 )
@@ -26,6 +27,10 @@ func (user *User) Save() *errors.RestErr {
 
 // Get performs final input validation, attempts to read from database, then returns
 func (user *User) Get() *errors.RestErr {
+	if err := bookstore_users_db.Client.Ping(); err != nil {
+		panic(err)
+	}
+
 	result := usersDb[user.Id]
 	if result == nil {
 		return errors.NewNotFoundError(fmt.Sprintf("user %d not found", user.Id))
