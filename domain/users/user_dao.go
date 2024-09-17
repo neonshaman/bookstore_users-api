@@ -31,9 +31,11 @@ func (user *User) Save() *errors.RestErr {
 	)
 	if err != nil {
 		if strings.Contains(err.Error(), "Duplicate entry") {
-			return errors.NewInternalServerError("User already exists")
+			return errors.NewBadRequestError(
+				fmt.Sprintf("user %s already exists", user.Email))
 		}
-		return errors.NewInternalServerError(fmt.Sprintf("could not write user to database: %s", err.Error()))
+		return errors.NewInternalServerError(
+			fmt.Sprintf("could not write user to database: %s", err.Error()))
 	}
 	userId, err := result.LastInsertId()
 	if err != nil {
