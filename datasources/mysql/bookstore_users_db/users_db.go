@@ -36,5 +36,5 @@ func init() {
 	if err = Client.Ping(); err != nil {
 		panic(err)
 	}
-	log.Println("Successfully connected to MySQL")
+	log.Println("Successfully connected to bookstore_users")
 }

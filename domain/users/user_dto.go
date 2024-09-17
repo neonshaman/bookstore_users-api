@@ -6,7 +6,7 @@ import (
 )
 
 type User struct {
-	Id          int64  `json:"id"`
+	Id          int64  `json:"id"` // TODO: kind of hate auto-incrementing ids, will generate uuids later
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name"`
 	Email       string `json:"email"`
