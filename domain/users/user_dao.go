@@ -5,6 +5,7 @@ import (
 	"github.com/neonshaman/bookstore_users-api/datasources/mysql/bookstore_users_db"
 	"github.com/neonshaman/bookstore_users-api/utils/date_utils"
 	"github.com/neonshaman/bookstore_users-api/utils/errors"
+	"strings"
 )
 
 // SQL queries
@@ -29,6 +30,9 @@ func (user *User) Save() *errors.RestErr {
 		user.DateCreated,
 	)
 	if err != nil {
+		if strings.Contains(err.Error(), "Duplicate entry") {
+			return errors.NewInternalServerError("User already exists")
+		}
 		return errors.NewInternalServerError(fmt.Sprintf("could not write user to database: %s", err.Error()))
 	}
 	userId, err := result.LastInsertId()
